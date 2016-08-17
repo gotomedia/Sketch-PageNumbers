@@ -17,7 +17,7 @@
     "title" : "Add Page Numbers"
   },
   "identifier" : "com.gotomedia.pagenumbers",
-  "version" : "0.2",
+  "version" : "0.3",
   "description" : "Add page numbers to artboards",
   "authorEmail" : "",
   "name" : "Page Numbers"
