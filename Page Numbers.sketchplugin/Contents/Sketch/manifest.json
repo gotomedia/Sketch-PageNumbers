@@ -16,7 +16,7 @@
     ],
     "title" : "Add Page Numbers"
   },
-  "identifier" : "com.washi.pagenumbers",
+  "identifier" : "com.gotomedia.pagenumbers",
   "version" : "0.2",
   "description" : "Add page numbers to artboards",
   "authorEmail" : "",
