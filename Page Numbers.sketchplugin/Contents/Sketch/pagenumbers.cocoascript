@@ -1,0 +1,107 @@
+var onRun = function(context) {
+
+    //Default Variables
+    var doc = context.document;
+    var pages = [doc pages];
+    var totalPages = [pages count];
+    var totalArtboards = 0;
+    var placeHolder = "{page}";
+
+    //Set the Initial Values From the User Defaults if They Exist
+    var userDefaults = [NSUserDefaults standardUserDefaults];
+
+    var defaultStartPage = 1;
+    if ([userDefaults objectForKey:@"defaultStartPage"]) {
+        defaultStartPage = [userDefaults objectForKey:@"defaultStartPage"];
+    }
+
+    var defaultStartNumber = 1;
+    if ([userDefaults objectForKey:@"defaultStartNumber"]) {
+        defaultStartNumber = [userDefaults objectForKey:@"defaultStartNumber"];
+    }
+
+    var reverseOrder = true;
+    if ([userDefaults objectForKey:@"reverseOrder"]) {
+        reverseOrder = [userDefaults objectForKey:@"reverseOrder"];
+    }
+
+    //Ask for the User Input
+    var userInput = COSAlertWindow.new();
+
+    userInput.setMessageText("Add Page Number");
+
+    userInput.addTextLabelWithValue("Start Page From");
+    userInput.addTextFieldWithValue(defaultStartPage);
+
+    userInput.addTextLabelWithValue("Start Number From");
+    userInput.addTextFieldWithValue(defaultStartNumber);
+
+    var reverseOrderCheckbox = NSButton.alloc().initWithFrame(NSMakeRect(0, 0, 300, 18));
+    reverseOrderCheckbox.setButtonType(NSSwitchButton);
+    reverseOrderCheckbox.setTitle("Reverse Artboard Order (Top to Bottom)");
+    reverseOrderCheckbox.setState(reverseOrder);
+    userInput.addAccessoryView(reverseOrderCheckbox);
+
+    userInput.addButtonWithTitle("Add");
+    userInput.addButtonWithTitle("Cancel");
+
+    var responseCode = userInput.runModal();
+
+    //Get the Values From the Fields
+    var startPage = userInput.viewAtIndex(1).floatValue();
+    var startNumber = userInput.viewAtIndex(3).floatValue();
+    var reverseOrder = userInput.viewAtIndex(4).state();
+
+    if (responseCode == 1000) {
+        //Save the Input to the User Defaults
+        [userDefaults setObject: startPage forKey:@"defaultStartPage"];
+        [userDefaults setObject: startNumber forKey:@"defaultStartNumber"];
+        [userDefaults setObject: reverseOrder forKey:@"reverseOrder"];
+        [userDefaults synchronize];
+
+        //Add Page Numbers
+        for (i = startPage - 1; i < totalPages; i++) {
+            var thisPage = pages[i];
+            var pageArtboards = [thisPage artboards];
+            //pageArtboards.reverse();
+            var totalPageArtboards = [pageArtboards count];
+
+            if (reverseOrder) {
+                for (j = totalPageArtboards - 1; j >= 0; j--) {
+                    var thisArtboard = pageArtboards[j];
+                    var artboardLayers = [thisArtboard children];
+                    var totalArtboardLayers = [artboardLayers count];
+                    totalArtboards++;
+                    var pageNumber = "PAGE " + (totalArtboards + startNumber - 1);
+
+                    for (k = 0; k < totalArtboardLayers; k++) {
+                        var thisLayer = artboardLayers[k];
+                        if ([thisLayer name] == placeHolder) {
+                            [thisLayer select: true byExpandingSelection: true];
+                            [thisLayer setStringValue: pageNumber];
+                            [thisLayer select: false byExpandingSelection: true];
+                        }
+                    }
+                }
+            } else {
+                for (j = 0; j < totalPageArtboards; j++) {
+                    var thisArtboard = pageArtboards[j];
+                    var artboardLayers = [thisArtboard children];
+                    var totalArtboardLayers = [artboardLayers count];
+                    totalArtboards++;
+                    var pageNumber = "PAGE " + (totalArtboards + startNumber - 1);
+
+                    for (k = 0; k < totalArtboardLayers; k++) {
+                        var thisLayer = artboardLayers[k];
+                        if ([thisLayer name] == placeHolder) {
+                            [thisLayer select: true byExpandingSelection: true];
+                            [thisLayer setStringValue: pageNumber];
+                            [thisLayer select: false byExpandingSelection: true];
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+};

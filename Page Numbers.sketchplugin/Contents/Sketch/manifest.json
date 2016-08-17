@@ -1,0 +1,24 @@
+{
+  "author" : "Jeffrey Chiang",
+  "commands" : [
+    {
+      "script" : "pagenumbers.cocoascript",
+      "name" : "Page Numbers",
+      "handlers" : "onRun",
+      "shortcut" : "cmd alt ctrl p",
+      "identifier" : "pagenumbers"
+    }
+  ],
+  "menu" : {
+    "isRoot": true,
+    "items" : [
+      "pagenumbers"
+    ],
+    "title" : "Add Page Numbers"
+  },
+  "identifier" : "com.washi.pagenumbers",
+  "version" : "0.2",
+  "description" : "Add page numbers to artboards",
+  "authorEmail" : "",
+  "name" : "Page Numbers"
+}
