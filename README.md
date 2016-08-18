@@ -7,7 +7,7 @@ Sketch plugin for adding page numbers to artboards.
 2. **Apply Page Numbers:** Run this plugin from Plugins menu or press keyboard shortcut `Command` + `Option` + `Control` + `P`.
 
 ## Options
-- **Start Page Number:** Change this if you want to start from a different number than 1.
+- **Start Page Number:** Change this if you want to start from a different number.
 - **Reverse Artboard Order:** Sketch app's default artboard order is from bottom to top in Layers List. Enable this will reverse that order.
 
 ---
