@@ -1,5 +1,6 @@
 var onRun = function(context) {
 
+
   //Default Variables
   var doc = context.document;
   var pages = [doc pages];
@@ -19,6 +20,17 @@ var onRun = function(context) {
   if ([userDefaults objectForKey:@"reverseOrder"]) {
       reverseOrder = [userDefaults objectForKey:@"reverseOrder"];
   }
+  
+  var defaultPrefix = "Page ";
+  if ([userDefaults objectForKey:@"defaultPrefix"]) {
+      defaultPrefix = [userDefaults objectForKey:@"defaultPrefix"];
+  }
+  
+  var defaultSuffix = ".";
+  if ([userDefaults objectForKey:@"defaultSuffix"]) {
+      defaultSuffix = [userDefaults objectForKey:@"defaultSuffix"];
+  }
+
 
   //Ask for the User Input
   var userInput = COSAlertWindow.new();
@@ -27,6 +39,12 @@ var onRun = function(context) {
 
   userInput.addTextLabelWithValue("Start Number From");
   userInput.addTextFieldWithValue(defaultStartNumber);
+  
+  userInput.addTextLabelWithValue("Prefix");
+  userInput.addTextFieldWithValue(defaultPrefix);
+  
+  userInput.addTextLabelWithValue("Suffix");
+  userInput.addTextFieldWithValue(defaultSuffix);
 
   var reverseOrderCheckbox = NSButton.alloc().initWithFrame(NSMakeRect(0, 0, 300, 18));
   reverseOrderCheckbox.setButtonType(NSSwitchButton);
@@ -39,14 +57,19 @@ var onRun = function(context) {
 
   var responseCode = userInput.runModal();
 
+  
   //Get the Values From the Fields
   var startNumber = userInput.viewAtIndex(1).floatValue();
-  var reverseOrder = userInput.viewAtIndex(2).state();
+  var prefix = userInput.viewAtIndex(3).stringValue();
+  var suffix = userInput.viewAtIndex(5).stringValue();
+  var reverseOrder = userInput.viewAtIndex(6).state();
 
   if (responseCode == 1000) {
       //Save the Input to the User Defaults
       [userDefaults setObject: startNumber forKey:@"defaultStartNumber"];
       [userDefaults setObject: reverseOrder forKey:@"reverseOrder"];
+      [userDefaults setObject: prefix forKey:@"defaultPrefix"];
+      [userDefaults setObject: suffix forKey:@"defaultSuffix"];
       [userDefaults synchronize];
 
       //Add Page Numbers
@@ -63,7 +86,7 @@ var onRun = function(context) {
 
                   for (k = 0; k < totalArtboardLayers; k++) {
                       var thisLayer = artboardLayers[k];
-                      var pageNumber = "PAGE " + (layerCount + startNumber);
+                      var pageNumber = prefix + (layerCount + startNumber) + suffix;
                       if ([thisLayer name] == placeHolder) {
                           [thisLayer select: true byExpandingSelection: true];
                           [thisLayer setStringValue: pageNumber];
@@ -80,7 +103,7 @@ var onRun = function(context) {
 
                   for (k = 0; k < totalArtboardLayers; k++) {
                       var thisLayer = artboardLayers[k];
-                      var pageNumber = "PAGE " + (layerCount + startNumber);
+                      var pageNumber = prefix + (layerCount + startNumber) + suffix;
                       if ([thisLayer name] == placeHolder) {
                           [thisLayer select: true byExpandingSelection: true];
                           [thisLayer setStringValue: pageNumber];
@@ -92,5 +115,5 @@ var onRun = function(context) {
           }
       }
   }
-
+  
 };
